@@ -1,0 +1,6 @@
+# Ignore sensitive credential files
+credentials.json
+token.json
+
+# Ignore compiled binaries
+google-drive-mcp-server
