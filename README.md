@@ -5,6 +5,19 @@
 
 This project implements a Model Context Protocol (MCP) server that provides tools and resources for interacting with Google Drive. It allows for programmatic access to Google Drive functionalities, enabling other MCP-compatible agents or systems to manage files and folders.
 
+## Table of Contents
+
+-   [Current Features](#current-features-)
+-   [Project Structure](#project-structure-)
+-   [Setup Instructions](#setup-instructions-)
+    -   [Prerequisites](#prerequisites-)
+    -   [Configuration](#configuration-)
+    -   [Running the Server](#running-the-server-)
+-   [Usage](#usage-)
+-   [Planned Features](#planned-features-)
+-   [Contributing](#contributing-)
+-   [License](#license-)
+
 ## Current Features ✨
 
 The server currently provides the following functionalities:
@@ -13,6 +26,15 @@ The server currently provides the following functionalities:
 -   **File Creation** 📄: Create new files with specified content in a given Google Drive path.
 -   **DOCX File Creation** 📝: Create new `.docx` files with specified content in a given Google Drive path.
 -   **Folder Suggestion** 💡: Suggests a Google Drive folder based on the content name.
+
+## Project Structure 🏗️
+
+The project follows a standard Go project layout:
+
+-   `cmd/server/`: Contains the main application entry point for the MCP server.
+-   `configs/`: Stores configuration files, such as the Google Service Account credentials.
+-   `internal/`: Reserved for private application and library code that should not be imported by other applications.
+-   `pkg/driveapi/`: Contains reusable library code for interacting with the Google Drive API. This includes client setup, file operations, folder management, and suggestion logic.
 
 ## Setup Instructions 🛠️
 
@@ -69,7 +91,11 @@ To set up and run the Google Drive MCP Server, follow these steps:
     ```
     Ensure that `$(pwd)/configs` correctly points to the directory containing your `credentials.json` file.
 
-## Planned Features 💡
+## Usage 💡
+
+Once the server is running, you can interact with it using an MCP-compatible client. The server exposes various tools for Google Drive operations. Refer to the MCP client documentation for details on how to call these tools.
+
+## Planned Features 🔮
 
 -   **File Update**: Update existing files in Google Drive.
 -   **File Deletion**: Delete files from Google Drive.
@@ -77,3 +103,11 @@ To set up and run the Google Drive MCP Server, follow these steps:
 -   **File Search**: Advanced search capabilities for files based on various criteria (name, type, content).
 -   **Permissions Management**: Manage file and folder permissions.
 -   **Webhooks/Notifications**: Integrate with Google Drive change notifications.
+
+## Contributing 🤝
+
+We welcome contributions to the Google Drive MCP Server! If you have suggestions, bug reports, or want to contribute code, please open an issue or submit a pull request on the GitHub repository.
+
+## License 📄
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
