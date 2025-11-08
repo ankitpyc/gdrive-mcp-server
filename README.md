@@ -1,5 +1,8 @@
 # Google Drive MCP Server ☁️
 
+[![Go Reference](https://pkg.go.dev/badge/github.com/ankitpyc/gdrive-mcp-server.svg)](https://pkg.go.dev/github.com/ankitpyc/gdrive-mcp-server)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 This project implements a Model Context Protocol (MCP) server that provides tools and resources for interacting with Google Drive. It allows for programmatic access to Google Drive functionalities, enabling other MCP-compatible agents or systems to manage files and folders.
 
 ## Current Features ✨
@@ -25,7 +28,7 @@ To set up and run the Google Drive MCP Server, follow these steps:
 ### Configuration ⚙️
 
 1.  **Enable Google Drive API**:
-    -   Go to the Google Cloud Console.
+    -   Go to the [Google Cloud Console](https://console.cloud.google.com/).
     -   Create a new project or select an existing one.
     -   Navigate to "APIs & Services" > "Library".
     -   Search for "Google Drive API" and enable it.
