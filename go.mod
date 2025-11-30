@@ -1,14 +1,14 @@
 module google-drive-mcp-server
 
-go 1.24.0
-
-toolchain go1.24.9
+go 1.25
 
 require (
 	github.com/mark3labs/mcp-go v0.42.0
 	golang.org/x/oauth2 v0.32.0
 	google.golang.org/api v0.254.0
 )
+
+replace google.golang.org/api => google.golang.org/api v0.254.0
 
 require (
 	cloud.google.com/go/auth v0.17.0 // indirect

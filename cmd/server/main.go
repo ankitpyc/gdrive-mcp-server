@@ -168,6 +168,97 @@ func main() {
 		return mcp.NewToolResultText(string(jsonResult)), nil
 	})
 
+	// Register "search drive items" tool
+	searchDriveItemsTool := mcp.NewTool("search_drive_items",
+		mcp.WithDescription("Searches for files and folders in Google Drive based on a query string."),
+		mcp.WithString("query",
+			mcp.Required(),
+			mcp.Description("The Google Drive API search query string (e.g., 'name contains \"Projects\"')"),
+		),
+	)
+	s.AddTool(searchDriveItemsTool, func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+		query, err := request.RequireString("query")
+		if err != nil {
+			return mcp.NewToolResultError(err.Error()), nil
+		}
+
+		files, err := driveapi.SearchDriveItems(ctx, srv, query)
+		if err != nil {
+			return mcp.NewToolResultError(err.Error()), nil
+		}
+		result := make([]map[string]string, len(files))
+		for i, file := range files {
+			result[i] = map[string]string{"id": file.Id, "name": file.Name, "mime_type": file.MimeType}
+		}
+		jsonResult, err := json.Marshal(map[string]interface{}{"found_items": result})
+		if err != nil {
+			return mcp.NewToolResultError(err.Error()), nil
+		}
+		return mcp.NewToolResultText(string(jsonResult)), nil
+	})
+
+	// Register "read file content" tool
+	readFileContentTool := mcp.NewTool("read_file_content",
+		mcp.WithDescription("Reads the content of a specified file from Google Drive, exporting .docx files as plain text."),
+		mcp.WithString("file_id",
+			mcp.Required(),
+			mcp.Description("The ID of the file to read."),
+		),
+		mcp.WithString("mime_type",
+			mcp.Required(),
+			mcp.Description("The MIME type of the file (e.g., 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' for .docx, 'text/plain' for text files, 'application/pdf' for PDF)."),
+		),
+	)
+	s.AddTool(readFileContentTool, func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+		fileID, err := request.RequireString("file_id")
+		if err != nil {
+			return mcp.NewToolResultError(err.Error()), nil
+		}
+		mimeType, err := request.RequireString("mime_type")
+		if err != nil {
+			return mcp.NewToolResultError(err.Error()), nil
+		}
+
+		content, err := driveapi.ReadFileContent(ctx, srv, fileID, mimeType)
+		if err != nil {
+			return mcp.NewToolResultError(err.Error()), nil
+		}
+		jsonResult, err := json.Marshal(map[string]interface{}{"content": content})
+		if err != nil {
+			return mcp.NewToolResultError(err.Error()), nil
+		}
+		return mcp.NewToolResultText(string(jsonResult)), nil
+	})
+
+	// Register "summarize content" tool
+	summarizeContentTool := mcp.NewTool("summarize_content",
+		mcp.WithDescription("Summarizes the provided text content."),
+		mcp.WithString("content",
+			mcp.Required(),
+			mcp.Description("The text content to summarize."),
+		),
+	)
+	s.AddTool(summarizeContentTool, func(ctx context.Context, request mcp.CallToolRequest) (*mcp.CallToolResult, error) {
+		content, err := request.RequireString("content")
+		if err != nil {
+			return mcp.NewToolResultError(err.Error()), nil
+		}
+
+		// Placeholder for actual summarization logic.
+		// In a real scenario, this would integrate with an LLM or a summarization library.
+		summary := content
+		if len(content) > 200 { // Example: truncate if too long
+			summary = content[:200] + "..."
+		}
+		summary = "Placeholder summary: " + summary
+
+		jsonResult, err := json.Marshal(map[string]interface{}{"summary": summary})
+		if err != nil {
+			return mcp.NewToolResultError(err.Error()), nil
+		}
+		return mcp.NewToolResultText(string(jsonResult)), nil
+	})
+
 	// Explicitly add mcp/list_tools for testing
 	listToolsMCPTool := mcp.NewTool("mcp/list_tools",
 		mcp.WithDescription("Lists all available tools on the MCP server."),
